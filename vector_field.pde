@@ -10,6 +10,9 @@ void setup(){
   
   FlowField flowField= new FlowField(initialVector, rows, columns);
   flowField.drawField();
+  
+  DisplayControls displayControls= new DisplayControls();
+  displayControls.drawControls();
 }
 
 void draw(){

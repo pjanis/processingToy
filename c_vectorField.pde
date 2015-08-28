@@ -32,13 +32,13 @@ class FlowField {
     int fieldRows= this.flowVectors.length;
     int fieldColumns= this.flowVectors[0].length;
 
-    int row_step= displayHeight/fieldRows;
-    int column_step= displayWidth/fieldColumns;
+    int row_step= height/fieldRows;
+    int column_step= width/fieldColumns;
     
     for(int i = 0; i < fieldRows; i++){
       for(int j = 0; j < fieldColumns; j++){
-        int start_x= i * row_step;
-        int start_y= j * column_step;
+        int start_x= j * column_step;
+        int start_y= i * row_step;
         int vec_x= (int) this.flowVectors[i][j].x;
         int vec_y= (int) this.flowVectors[i][j].y;
         fieldArrow( start_x, start_y, vec_x, vec_y);    
