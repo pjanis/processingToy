@@ -1,11 +1,19 @@
 class FlowField {
-  PVector [][] flowVectors;
+  PVector [] flowVectors;
+  int [][]  vectorOrigins;
    
   FlowField( PVector initialVec, int rows, int columns ){
-    flowVectors = new PVector[rows][columns];
+    flowVectors = new PVector[rows * columns];
+    vectorOrigins = new int[rows * columns][2];
+    
+    int row_step= height/rows;
+    int column_step= width/columns;
+    
     for(int i = 0; i < rows; i++){
       for(int j = 0;j < columns; j++){
-        flowVectors[i][j]= initialVec;
+        flowVectors[i*columns + j]= initialVec;
+        vectorOrigins[i*columns+j][0]=  j * column_step; // x coordinate
+        vectorOrigins[i*columns+j][1]=  i * row_step; // y coordinate        
       }
     }
   }
@@ -29,20 +37,13 @@ class FlowField {
   
   
   void drawField(){
-    int fieldRows= this.flowVectors.length;
-    int fieldColumns= this.flowVectors[0].length;
-
-    int row_step= height/fieldRows;
-    int column_step= width/fieldColumns;
     
-    for(int i = 0; i < fieldRows; i++){
-      for(int j = 0; j < fieldColumns; j++){
-        int start_x= j * column_step;
-        int start_y= i * row_step;
-        int vec_x= (int) this.flowVectors[i][j].x;
-        int vec_y= (int) this.flowVectors[i][j].y;
-        fieldArrow( start_x, start_y, vec_x, vec_y);    
-      }
+    background(255);
+    
+    for(int i = 0; i < this.flowVectors.length; i++){
+      int vec_x= (int) this.flowVectors[i].x;
+      int vec_y= (int) this.flowVectors[i].y;
+      fieldArrow( this.vectorOrigins[i][0], this.vectorOrigins[i][1], vec_x, vec_y);    
     }
   }
 }

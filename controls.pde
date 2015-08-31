@@ -1,6 +1,8 @@
 class DisplayControls{
   String[] states;
   int state_index;
+  int control_box_x;  // smallest x of control box
+  int control_box_y;  // largest y of control box
   
   DisplayControls(){
     states= new String[] { "vectors", "particals" };
@@ -8,7 +10,7 @@ class DisplayControls{
     
   }
   
-  void drawControls(){
+  void drawControl(){
     int control_box_width= 0;
     int control_box_height= (int) (textAscent() + textDescent());
     
@@ -23,7 +25,9 @@ class DisplayControls{
     
     fill(0);
     stroke(255);
-    rect( width - control_box_width, -1, control_box_width, control_box_height );
+    control_box_x= width - control_box_width;
+    control_box_y= control_box_height - 1;
+    rect( control_box_x, -1, control_box_width, control_box_height );
     
     fill(255);
     textAlign( CENTER, CENTER );
@@ -35,5 +39,19 @@ class DisplayControls{
   // only changes parameters. doesn't update display
   void cycleControl(){
     this.state_index= (this.state_index + 1) % this.states.length;
+  }
+  
+  boolean overControl(){
+    if( mouseX > control_box_x && mouseY < control_box_y ){
+      return true;
+    } else {
+      return false; 
+    }
+  }
+  
+  void updateControl(){
+    if( overControl() ){
+      this.cycleControl();
+    }
   }
 }
