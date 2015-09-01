@@ -14,24 +14,28 @@ void setup(){
   rows= 500/50;
   columns= 900/50;
   flowField= new FlowField(initialVector, rows, columns);
+  flowField.swirrleField();
   flowField.drawField();
   
+
   displayControls= new DisplayControls();
   displayControls.drawControl();
   
-  particles= new Particles(100); //particle spacing as parameter
+  particles= new Particles(20); //particle spacing as parameter
 }
 
 void draw(){
   if( displayControls.states[displayControls.state_index] == "particals" ){
     particles.stepParticles(flowField);
   }
+  if ( displayControls.states[displayControls.state_index] == "vectors"  && mousePressed){
+    flowField.updateField();
+  }
   updateDisplay();
 }
 
 void mousePressed(){
-  displayControls.updateControl();
-  updateDisplay();
+  displayControls.updateControl(flowField, particles);
 }
 
 

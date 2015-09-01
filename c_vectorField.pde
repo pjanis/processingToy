@@ -1,25 +1,12 @@
 class FlowField {
   PVector [] flowVectors;
+  PVector initialVector;
   int rows;
   int columns;
   int [][]  vectorOrigins;
    
-  FlowField( PVector initialVec, int initRows, int initColumns ){
-    rows= initRows;
-    columns= initColumns;
-    flowVectors = new PVector[rows * columns];
-    vectorOrigins = new int[rows * columns][2];
-    
-    int rowStep= height/(rows - 1);
-    int columnStep= width/(columns - 1);
-
-    for(int i = 0; i < rows; i++){
-      for(int j = 0;j < columns; j++){
-        flowVectors[i*columns + j]= initialVec;
-        vectorOrigins[i*columns+j][0]=  j * columnStep; // x coordinate
-        vectorOrigins[i*columns+j][1]=  i * rowStep; // y coordinate        
-      }
-    }
+  FlowField( PVector initVec, int initRows, int initColumns ){
+    set( initVec, initRows, initColumns);
   }
   
   void fieldArrow(int start_x, int start_y, int x, int y ){
@@ -50,4 +37,63 @@ class FlowField {
       fieldArrow( this.vectorOrigins[i][0], this.vectorOrigins[i][1], vec_x, vec_y);    
     }
   }
+  
+  void updateFlowVector( int i, float newX, float newY){
+    this.flowVectors[i]= new PVector(newX,newY); 
+  }
+  
+  void updateField(){
+    for(int i=0; i<this.flowVectors.length; i++){
+      PVector vOrigin= new PVector(this.vectorOrigins[i][0], this.vectorOrigins[i][1]);
+      PVector vMouse= new PVector(mouseX, mouseY);
+      PVector vMove= PVector.sub(vMouse, vOrigin);
+      float moveSpeed= 10.0;
+      
+      if(vMove.mag() > 1){
+        updateFlowVector(i, this.flowVectors[i].x + moveSpeed*vMove.x/vMove.magSq(), this.flowVectors[i].y - moveSpeed*vMove.y/vMove.magSq()); 
+      } else if( vMove.mag() != 0){
+        vMove.normalize();
+        updateFlowVector(i, this.flowVectors[i].x + moveSpeed*vMove.x/vMove.magSq(), this.flowVectors[i].y - moveSpeed*vMove.y/vMove.magSq()); 
+      }
+    }
+  }
+  
+  void swirrleField(){
+    for( int i=0; i < this.vectorOrigins.length; i++){
+      PVector v= this.flowVectors[i];
+
+      if( this.vectorOrigins[i][0] > width/2){
+        this.updateFlowVector(i, v.x,-v.y);
+      } 
+      v= this.flowVectors[i];
+      if( this.vectorOrigins[i][1] > height/2){
+        this.updateFlowVector(i, -v.x,v.y);
+      }
+    }
+  }
+  
+  void set( PVector initVec, int initRows, int initColumns ){
+    rows= initRows;
+    columns= initColumns;
+    initialVector= initVec;
+    flowVectors = new PVector[rows * columns];
+    vectorOrigins = new int[rows * columns][2];
+    
+    int rowStep= height/(rows - 1);
+    int columnStep= width/(columns - 1);
+
+    for(int i = 0; i < rows; i++){
+      for(int j = 0;j < columns; j++){
+        flowVectors[i*columns + j]= initVec;
+        vectorOrigins[i*columns+j][0]=  j * columnStep; // x coordinate
+        vectorOrigins[i*columns+j][1]=  i * rowStep; // y coordinate        
+      }
+    }
+  }
+  
+  void reset(){
+    set( this.initialVector, this.rows, this.columns);
+    swirrleField();
+  }
+  
 }

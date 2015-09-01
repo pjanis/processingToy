@@ -1,29 +1,17 @@
 class Particles{
   Particle[] particles;
+  int initialSpacing;
   
   Particles(int particleSpacing){
-    int rows= (int) height/particleSpacing;
-    int columns= (int) width/particleSpacing;
-    particles= new Particle[rows * columns];
-    
-    for( int i=0; i < rows; i++ ){
-      for( int j=0; j < columns; j++){
-        float initX= (float) j * particleSpacing;
-        float initY= (float) i * particleSpacing;
-        color initC= #C290D4;
-        
-        particles[ i * columns + j]= new Particle(initX,initY,initC);
-       
-      }
-    }
+    set( particleSpacing);
   }
   
   void drawParticles(){
     background(0);
     for( Particle p: this.particles){
-      stroke(p.c);
+      stroke(red(p.c), green(p.c), blue(p.c), alpha(p.c)/2);
       fill(p.c);
-      ellipse(p.x, p.y, 2,2);
+      ellipse(p.x, p.y, 10,10);
     }
   }
   
@@ -52,6 +40,28 @@ class Particles{
       if( p.y > height){ p.y = height;}
     }
    
+  }
+  
+  void set(int particleSpacing){
+    initialSpacing= particleSpacing;
+    int rows= (int) height/particleSpacing;
+    int columns= (int) width/particleSpacing;
+    particles= new Particle[rows * columns];
+    
+    for( int i=0; i < rows; i++ ){
+      for( int j=0; j < columns; j++){
+        float initX= (float) j * particleSpacing;
+        float initY= (float) i * particleSpacing;
+        color initC= color(30,40,255,100);
+        
+        particles[ i * columns + j]= new Particle(initX,initY,initC);
+       
+      }
+    }
+  }
+  
+  void reset(){
+    set( this.initialSpacing);
   }
   
 }
