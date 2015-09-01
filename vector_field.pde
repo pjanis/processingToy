@@ -19,7 +19,7 @@ void setup(){
   displayControls= new DisplayControls();
   displayControls.drawControl();
   
-  particles= new Particles(10); //particle spacing as parameter
+  particles= new Particles(100); //particle spacing as parameter
 }
 
 void draw(){

@@ -43,22 +43,13 @@ class Particles{
       
       int nearestVector= (r + rOffset) * flowField.columns + c + cOffset;
       
-      print(flowField.vectorOrigins[1][1]);
-      print("\n");
-      print(r);
-      print("\n");
-      print("columns");
-      print(flowField.columns);
-      print("\n");
-      print("nearest vector");
-      print(nearestVector);
-      print("\n");
-      print("number of flow vectors");
-      print(flowField.flowVectors.length);
-      print("\n");
+      p.x= p.x + 5 * flowField.flowVectors[ nearestVector].x/ frameRate;
+      p.y= p.y - 5 * flowField.flowVectors[ nearestVector].y/ frameRate; //minux because y in processing increases going down
       
-      p.x= p.x + flowField.flowVectors[ nearestVector].x/ frameRate;
-      p.y= p.y + flowField.flowVectors[ nearestVector].y/ frameRate;
+      if( p.x < 0){ p.x = 0;}
+      if( p.y < 0){ p.y = 0;}
+      if( p.x > width){ p.x = width;}
+      if( p.y > height){ p.y = height;}
     }
    
   }
