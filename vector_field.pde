@@ -23,13 +23,15 @@ void setup(){
 }
 
 void draw(){
-
+  if( displayControls.states[displayControls.state_index] == "particals" ){
+    particles.stepParticles(flowField);
+  }
+  updateDisplay();
 }
 
 void mousePressed(){
   displayControls.updateControl();
   updateDisplay();
-  displayControls.drawControl();
 }
 
 
@@ -39,4 +41,5 @@ void updateDisplay(){
   } else if ( displayControls.states[displayControls.state_index] == "vectors" ){
     flowField.drawField();
   }
+  displayControls.drawControl();
 }

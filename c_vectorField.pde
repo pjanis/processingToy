@@ -1,19 +1,23 @@
 class FlowField {
   PVector [] flowVectors;
+  int rows;
+  int columns;
   int [][]  vectorOrigins;
    
-  FlowField( PVector initialVec, int rows, int columns ){
+  FlowField( PVector initialVec, int initRows, int initColumns ){
+    rows= initRows;
+    columns= initColumns;
     flowVectors = new PVector[rows * columns];
     vectorOrigins = new int[rows * columns][2];
     
-    int row_step= height/rows;
-    int column_step= width/columns;
-    
+    int rowStep= height/(rows - 1);
+    int columnStep= width/(columns - 1);
+
     for(int i = 0; i < rows; i++){
       for(int j = 0;j < columns; j++){
         flowVectors[i*columns + j]= initialVec;
-        vectorOrigins[i*columns+j][0]=  j * column_step; // x coordinate
-        vectorOrigins[i*columns+j][1]=  i * row_step; // y coordinate        
+        vectorOrigins[i*columns+j][0]=  j * columnStep; // x coordinate
+        vectorOrigins[i*columns+j][1]=  i * rowStep; // y coordinate        
       }
     }
   }
