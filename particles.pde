@@ -20,8 +20,8 @@ class Particles{
     int yStep= flowField.vectorOrigins[flowField.columns][1] - flowField.vectorOrigins[0][1];  // Assumes uniform y distribution of flow Vectors
     
     for( Particle p: this.particles){
-      int c = (int) p.x / xStep; // column of nearest vector in flow field
-      int r = (int) p.y / yStep; // row of nearest vector in flow field
+      int c = floor( p.x / xStep); // column of nearest vector in flow field
+      int r = floor( p.y / yStep); // row of nearest vector in flow field
       
       int cOffset= 0; // correction if closer to next column vector
       int rOffset= 0; // correction if closer to next row vector
@@ -29,10 +29,10 @@ class Particles{
       if( p.x > ( c * xStep + xStep/2 ) ){ cOffset = 1; }
       if( p.y > ( r * yStep + yStep/2 ) ){ rOffset = 1; }
       
-      int nearestVector= (r + rOffset) * flowField.columns + c + cOffset;
-      
-      p.x= p.x + 5 * flowField.flowVectors[ nearestVector].x/ frameRate;
-      p.y= p.y - 5 * flowField.flowVectors[ nearestVector].y/ frameRate; //minux because y in processing increases going down
+      int nearestVector= floor((r + rOffset) * flowField.columns + c + cOffset);
+            
+       p.x= p.x + 5 * flowField.flowVectors[nearestVector].x/ frameRate;
+       p.y= p.y - 5 * flowField.flowVectors[nearestVector].y/ frameRate; //minus because y in processing increases going down
       
       if( p.x < 0){ p.x = 0;}
       if( p.y < 0){ p.y = 0;}
